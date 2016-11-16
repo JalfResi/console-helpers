@@ -64,10 +64,9 @@ class CsvGeneratorHelper extends InputAwareHelper
      */
     protected function askForFilename(OutputInterface $output)
     {
-        /** @var \Symfony\Component\Console\Helper\DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
-
-        return $dialog->askAndValidate($output, '<question>Filename:</question> ', function ($answer) {
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
+        $helper = $this->getHelperSet()->get('question');
+        $helper->setValidator(function ($answer) {
 
             if (!$this->filesystem->isAbsolutePath($answer)) {
                 throw new \RuntimeException('The filename must be an absolute path.');
@@ -77,6 +76,8 @@ class CsvGeneratorHelper extends InputAwareHelper
 
             return $answer;
         });
+        
+        return $helper->ask($this->input, $output, '<question>Filename:</question> ');
     }
 
     /**
