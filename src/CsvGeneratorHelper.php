@@ -6,6 +6,7 @@ use League\Csv\Writer;
 use Symfony\Component\Console\Helper\InputAwareHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CsvGeneratorHelper extends InputAwareHelper
@@ -66,7 +67,9 @@ class CsvGeneratorHelper extends InputAwareHelper
     {
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
         $helper = $this->getHelperSet()->get('question');
-        $helper->setValidator(function ($answer) {
+        
+        $question = new Question('<question>Filename:</question> ');
+        $question->setValidator(function ($answer) {
 
             if (!$this->filesystem->isAbsolutePath($answer)) {
                 throw new \RuntimeException('The filename must be an absolute path.');
@@ -77,7 +80,7 @@ class CsvGeneratorHelper extends InputAwareHelper
             return $answer;
         });
         
-        return $helper->ask($this->input, $output, '<question>Filename:</question> ');
+        return $helper->ask($this->input, $output, $question);
     }
 
     /**
