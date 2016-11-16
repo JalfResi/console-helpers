@@ -20,9 +20,9 @@ class TableGeneratorHelper extends Helper
      * @param \Traversable $rows
      * @param OutputInterface $output
      * @param callable $mapper
-     * @return int|\Symfony\Component\Console\Helper\TableHelper The table, or the number of rows output.
+     * @return \Symfony\Component\Console\Helper\Table The table.
      */
-    public function generate(\Traversable $rows, OutputInterface $output = null, $mapper = null)
+    public function generate(\Traversable $rows, OutputInterface $output, $mapper = null)
     {
         /** @var \Symfony\Component\Console\Helper\Table $table */
         $table  = new Table($output);
@@ -33,8 +33,6 @@ class TableGeneratorHelper extends Helper
 
         $table->addRows($rows);
 
-        if ($output) { $table->render($output); }
-
-        return $output ? count($rows) : $table;
+        return $table;
     }
 }
