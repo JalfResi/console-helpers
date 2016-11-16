@@ -2,6 +2,7 @@
 
 namespace Ctrl\Console\Helper;
 
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -23,8 +24,8 @@ class TableGeneratorHelper extends Helper
      */
     public function generate(\Traversable $rows, OutputInterface $output = null, $mapper = null)
     {
-        /** @var \Symfony\Component\Console\Helper\TableHelper $table */
-        $table  = $this->getHelperSet()->get('table');
+        /** @var \Symfony\Component\Console\Helper\Table $table */
+        $table  = new Table($output);
         $rows   = iterator_to_array($rows);
 
         if (is_callable($mapper))   { $rows = array_map($mapper, $rows); }
